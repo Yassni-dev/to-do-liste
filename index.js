@@ -1,31 +1,38 @@
-const btnEl = document.getElementById("btn");
-const birthdayEl = document.getElementById("birthday");
-const resultEl = document.getElementById("result");
+const nextEl = document.querySelector(".next");
 
-function calculateAge() {
-  const birthdayValue = birthdayEl.value;
-  if (birthdayValue === "") {
-    alert("Please enter your birthday");
-  } else {
-    const age = getAge(birthdayValue);
-    resultEl.innerText = `Your age is ${age} ${age > 1 ? "years" : "year"} old`;
+const prevEl = document.querySelector(".prev");
+
+const imgsEl = document.querySelectorAll("img");
+
+const imageContainerEl = document.querySelector(".image-container");
+
+let currentImg = 1;
+
+let timeout;
+
+nextEl.addEventListener("click", () => {
+  currentImg++;
+  clearTimeout(timeout);
+  updateImg();
+});
+
+prevEl.addEventListener("click", () => {
+  currentImg--;
+  clearTimeout(timeout);
+  updateImg();
+});
+
+updateImg();
+
+function updateImg() {
+  if (currentImg > imgsEl.length) {
+    currentImg = 1;
+  } else if (currentImg < 1) {
+    currentImg = imgsEl.length;
   }
+  imageContainerEl.style.transform = `translateX(-${(currentImg - 1) * 500}px)`;
+  timeout = setTimeout(() => {
+    currentImg++;
+    updateImg();
+  }, 3000);
 }
-
-function getAge(birthdayValue) {
-  const currentDate = new Date();
-  const birthdayDate = new Date(birthdayValue);
-  let age = currentDate.getFullYear() - birthdayDate.getFullYear();
-  const month = currentDate.getMonth() - birthdayDate.getMonth();
-
-  if (
-    month < 0 ||
-    (month === 0 && currentDate.getDate() < birthdayDate.getDate())
-  ) {
-    age--;
-  }
-
-  return age;
-}
-
-btnEl.addEventListener("click", calculateAge);
