@@ -1,38 +1,11 @@
-const nextEl = document.querySelector(".next");
+const bars = document.querySelector(".fa-bars");
+const sidebar = document.querySelector(".sidebar");
+const closingButton = document.querySelector(".fa-times");
 
-const prevEl = document.querySelector(".prev");
-
-const imgsEl = document.querySelectorAll("img");
-
-const imageContainerEl = document.querySelector(".image-container");
-
-let currentImg = 1;
-
-let timeout;
-
-nextEl.addEventListener("click", () => {
-  currentImg++;
-  clearTimeout(timeout);
-  updateImg();
+bars.addEventListener("click", () => {
+  sidebar.classList.toggle("show-sidebar");
 });
 
-prevEl.addEventListener("click", () => {
-  currentImg--;
-  clearTimeout(timeout);
-  updateImg();
+closingButton.addEventListener("click", () => {
+  sidebar.classList.remove("show-sidebar");
 });
-
-updateImg();
-
-function updateImg() {
-  if (currentImg > imgsEl.length) {
-    currentImg = 1;
-  } else if (currentImg < 1) {
-    currentImg = imgsEl.length;
-  }
-  imageContainerEl.style.transform = `translateX(-${(currentImg - 1) * 500}px)`;
-  timeout = setTimeout(() => {
-    currentImg++;
-    updateImg();
-  }, 3000);
-}
